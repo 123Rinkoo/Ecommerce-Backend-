@@ -6,29 +6,42 @@
 header {
     margin: 0;
     padding: 30px;
-    /* background-color: beige; */
-    background-image: linear-gradient(to top, white, beige );
+    background-color: beige;
+    background-image: linear-gradient(to top, white, beige);
     text-align: center;
     /* position: fixed; */
+    display: flex;
+padding: 10px;
+font-size: 18px;
+font-weight: 200;
+justify-content: center;
+list-style-type: none;
+border-bottom: 0.1rem solid white;
+position: fixed;
+top: 0%;
+width: 100%;
+z-index: 1;
 }
 
 header ul {
     display: flex;
     justify-content: center;
     font-size: 25px;
+    padding: 26px;
     /* position: fixed; */
 }
 
-header ul li{
+header ul li {
     margin: 0px 40px;
     list-style: none;
     border: 1px solid rgb(136, 180, 33);
 }
 
-header ul li a{
+header ul li a {
     text-decoration: none;
     color: black;
 }
-.homeimage img{
+
+.homeimage img {
     width: 100%;
 }
