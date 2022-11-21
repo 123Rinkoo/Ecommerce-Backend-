@@ -16,22 +16,26 @@ function showingOnScreen(YourProducts) {
                 alt="">
         </div>
         <div class="prod-details">
-            <span>$ ${YourProducts[i].price}</span>
+            <span>$${YourProducts[i].price}</span>
         </div>
-        <button class="shop-item-button" type="button">ADD TO CART</button>
+        <button class="shop-item-button" type="button" onclick="addToCart(${YourProducts[i].id})">ADD TO CART</button>
     </div>`
         main.innerHTML = main.innerHTML + mainChild;
     }
 
 }
-function addToCart(event) {
-    const button = event.target;
-    const shopItem = button.parentElement;
-    const price = shopItem.getElementsByClassName('prod-details')[0].innerText;
-    const image = shopItem.getElementsByClassName('prod-images')[0].src;
-    const title = shopItem.getElementsByTagName("h3")[0].innerText;
-    addingToCard(price, image, title);
+function addToCart(productId) {
+    // const button = event.target;
+    // const shopItem = button.parentElement;
+    // const price = shopItem.getElementsByClassName('prod-details')[0].innerText;
+    // const image = shopItem.getElementsByClassName('prod-images')[0].src;
+    // const title = shopItem.getElementsByTagName("h3")[0].innerText;
+    // addingToCard(price, image, title);
+    axios.post('http://localhost:3000/cart', {productId: productId})
+    .then((response)=>{console.log(response)})
+    .catch(err=>console.log(err));
 }
+
 function addingToCard(p, i, t) {
     var cartRow = document.createElement('div')
     cartRow.classList.add('cart-row')
