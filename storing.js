@@ -1,13 +1,38 @@
 window.onload = function () {
     event.preventDefault();
-    axios.get('http://localhost:3000/products')
-        .then(data => showingOnScreen(data.data))
-        .catch(err => connsole.log(err));
+    //     axios.get('http://localhost:3000/products')
+    //         .then(Cdata => showingOnScreen(Cdata.data))
+    //         .catch(err => console.log(err));
+    let pagenumber = 1;
+    axios.get(`http://localhost:3000/products?paaag=${pagenumber}`)
+        .then(res => {
+            showingOnScreen(res.data.Products);
+            ShowingPagination(res.data);
+        })
+        .catch(err => console.log(err));
+
+    axios.get('http://localhost:3000/cart')
+        .then((CartProducts) => {
+            addingToCard(CartProducts.data)
+        })
+        .catch((err) => { console.log(err) });
 }
 
+// function pageNo(event) {
+//     event.preventDefault();
+//     const pagenumber = event.target.textContent;
+//     axios.get(`http://localhost:3000/products?paaag=${pagenumber}`)
+//         .then(res =>{
+//             showingOnScreen(res.data.Products);
+//             ShowingPagination(res.data)
+//          })
+//         .catch(err => console.log(err));
+// }
+
 function showingOnScreen(YourProducts) {
+    const main = document.getElementById('Product-content');
+    main.innerHTML = "";
     for (let i = 0; i < YourProducts.length; i++) {
-        const main = document.getElementById('Product-content');
         const mainChild = `<div id="plant1">
         <h3>${YourProducts[i].title}</h3>
         <div class="image-container">
@@ -22,16 +47,40 @@ function showingOnScreen(YourProducts) {
     </div>`
         main.innerHTML = main.innerHTML + mainChild;
     }
+}
 
+function ShowingPagination({ currentPage, hasNextPage, nextPage, hasPreviousPage, previousPage, lastPage }) {
+    let pagination = document.getElementById('pagination');
+    pagination.innerHTML = "";
+    if (hasPreviousPage) {
+        const btn1 = document.createElement('button');
+        btn1.innerText = previousPage;
+        btn1.addEventListener('click', () => { getproducts(previousPage) });
+        pagination.appendChild(btn1);
+    }
+    const btn2 = document.createElement('button');
+    btn2.innerText = currentPage;
+    btn2.addEventListener('click', () => { getproducts(currentPage) });
+    pagination.appendChild(btn2);
+
+    if (hasNextPage) {
+        const btn3 = document.createElement('button')
+        btn3.innerText = nextPage;
+        btn3.addEventListener('click', () => { getproducts(nextPage) });
+        pagination.appendChild(btn3);
+    }
+}
+
+function getproducts(page){
+    axios.get(`http://localhost:3000/products?paaag=${page}`)
+        .then(res => {
+            showingOnScreen(res.data.Products);
+            ShowingPagination(res.data);
+        })
+        .catch(err => console.log(err));
 }
 
 function addToCart(productId) {
-    // const button = event.target;
-    // const shopItem = button.parentElement;
-    // const price = shopItem.getElementsByClassName('prod-details')[0].innerText;
-    // const image = shopItem.getElementsByClassName('prod-images')[0].src;
-    // const title = shopItem.getElementsByTagName("h3")[0].innerText;
-    // addingToCard(price, image, title);
     axios.post('http://localhost:3000/cart', { productId: productId })
         .then((response) => {
             if (response.status === 200) {
@@ -54,39 +103,6 @@ function notifyUsers(message) {
     setTimeout(() => {
         notification.remove();
     }, 2500);
-
-
-}
-
-// function addingToCard(p, i, t) {
-//     var cartRow = document.createElement('div')
-//     cartRow.classList.add('cart-row')
-//     var cartItems = document.getElementsByClassName('cart-items')[0]
-//     var cartRowContents =  `<div class="cart-row" id="in-cart-album1">
-//     <span class="cart-item cart-column">
-//         <img class="cart-img"
-//             src="${i}"
-//             alt="">
-//         <span>${t}</span>
-//     </span>
-//     <span class="cart-price cart-column">${p}</span>
-//     <span class="cart-quantity cart-column">
-//         <input type="text" value="1">
-//         <button>REMOVE</button>
-//     </span>
-// </div>`
-//     cartRow.innerHTML = cartRowContents
-//     cartItems.append(cartRow);
-// }
-
-function ShowingCart(){
-    const id = document.getElementById('cart');
-    id.style = "display: block";
-    console.log('its working');
-    axios.get('http://localhost:3000/cart')
-        .then((CartProducts) => { 
-            addingToCard(CartProducts.data) })
-        .catch((err) => { console.log(err) });
 }
 
 function addingToCard(CartData) {
@@ -94,7 +110,8 @@ function addingToCard(CartData) {
         var cartRow = document.createElement('div')
         cartRow.classList.add('cart-row');
         var cartItems = document.getElementsByClassName('cart-items')[0];
-        var cartRowContents = `<div class="cart-row" id="in-cart-album1">
+        var cartRowContents = `<div class="cart-row" 
+        id="in-cart-album1">
     <span class="cart-item cart-column">
         <img class="cart-img"
             src="${CartData[i].imageUrl}"
@@ -103,20 +120,19 @@ function addingToCard(CartData) {
     </span>
     <span class="cart-price cart-column">${CartData[i].price}</span>
     <span class="cart-quantity cart-column">
-        <input type="text" value="1">
+        <input type="text" value="${CartData[i].cartItem.quantity}">
         <button>REMOVE</button>
     </span>
 </div>`
         cartRow.innerHTML = cartRowContents
         cartItems.append(cartRow);
     }
-
 }
 
-// function ShowingCart() {
-    // const id = document.getElementById('cart');
-    // id.style = "display: block";
-// }
+function ShowingCart() {
+    const id = document.getElementById('cart');
+    id.style = "display: block";
+}
 function CartCancel() {
     const id1 = document.getElementById('cart');
     id1.style = "display: none";

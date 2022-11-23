@@ -9,18 +9,17 @@ header {
     background-color: beige;
     background-image: linear-gradient(to top, white, beige);
     text-align: center;
-    /* position: fixed; */
     display: flex;
-padding: 10px;
-font-size: 18px;
-font-weight: 200;
-justify-content: center;
-list-style-type: none;
-border-bottom: 0.1rem solid white;
-position: fixed;
-top: 0%;
-width: 100%;
-z-index: 1;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 200;
+    justify-content: center;
+    list-style-type: none;
+    border-bottom: 0.1rem solid white;
+    position: fixed;
+    top: 0%;
+    width: 100%;
+    z-index: 1;
 }
 
 header ul {
@@ -28,7 +27,7 @@ header ul {
     justify-content: center;
     font-size: 25px;
     padding: 26px;
-    /* position: fixed; */
+    
 }
 
 header ul li {
