@@ -18,17 +18,6 @@ window.onload = function () {
         .catch((err) => { console.log(err) });
 }
 
-// function pageNo(event) {
-//     event.preventDefault();
-//     const pagenumber = event.target.textContent;
-//     axios.get(`http://localhost:3000/products?paaag=${pagenumber}`)
-//         .then(res =>{
-//             showingOnScreen(res.data.Products);
-//             ShowingPagination(res.data)
-//          })
-//         .catch(err => console.log(err));
-// }
-
 function showingOnScreen(YourProducts) {
     const main = document.getElementById('Product-content');
     main.innerHTML = "";
@@ -47,6 +36,16 @@ function showingOnScreen(YourProducts) {
     </div>`
         main.innerHTML = main.innerHTML + mainChild;
     }
+}
+
+function whenCartButtonClick(event) {
+    console.log("working")
+    event.preventDefault();
+    axios.get('http://localhost:3000/cart')
+        .then((CartProducts) => {
+            addingToCard(CartProducts.data)
+        })
+        .catch((err) => { console.log(err) });
 }
 
 function ShowingPagination({ currentPage, hasNextPage, nextPage, hasPreviousPage, previousPage, lastPage }) {
@@ -71,7 +70,7 @@ function ShowingPagination({ currentPage, hasNextPage, nextPage, hasPreviousPage
     }
 }
 
-function getproducts(page){
+function getproducts(page) {
     axios.get(`http://localhost:3000/products?paaag=${page}`)
         .then(res => {
             showingOnScreen(res.data.Products);
@@ -95,7 +94,7 @@ function addToCart(productId) {
 
 function notifyUsers(message) {
     // ........this is for notification.......
-    const container = document.getElementById('plants');
+    const container = document.getElementById('planty');
     const notification = document.createElement('div');
     notification.classList.add('notification');
     notification.innerHTML = `<h4>${message}<h4>`;
@@ -129,9 +128,34 @@ function addingToCard(CartData) {
     }
 }
 
+function SavingOrderDetails() {
+    axios.post("http://localhost:3000/create-order")
+        .then(res => {
+            console.log(res)
+            orderNotification(res.data.message);
+        })
+        .catch(err => { console.log(err) });
+}
+
+function orderNotification(message) {
+    const container = document.getElementById('planty');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerHTML = `${message}`;
+    container.appendChild(notification);
+    setTimeout(() => {
+        notification.remove();
+    }, 2500);
+}
+
 function ShowingCart() {
     const id = document.getElementById('cart');
     id.style = "display: block";
+    // axios.get('http://localhost:3000/cart')
+    //     .then((CartProducts) => {
+    //         addingToCard(CartProducts.data)
+    //     })
+    //     .catch((err) => { console.log(err) });
 }
 function CartCancel() {
     const id1 = document.getElementById('cart');
