@@ -27,7 +27,7 @@ header ul {
     justify-content: center;
     font-size: 25px;
     padding: 26px;
-    
+
 }
 
 header ul li {
@@ -39,6 +39,10 @@ header ul li {
 header ul li a {
     text-decoration: none;
     color: black;
+}
+
+header ul li a:hover{
+    color: green;
 }
 
 .homeimage img {

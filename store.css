@@ -229,6 +229,7 @@ section h2 {
 
 #pagination {
   text-align: center;
+  margin: -29px 0px;
 }
 
 #pagination button {

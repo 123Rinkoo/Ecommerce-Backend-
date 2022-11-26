@@ -24,4 +24,5 @@
 
 .orderProducts img {
     width: 10%;
+    border: 2px solid;
 }
